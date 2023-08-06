@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "cli-plugin-demo",
-    "slug": "cli-plugin-demo",
+    "name": "devtools-plugin-demo",
+    "slug": "devtools-plugin-demo",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -11,11 +11,10 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "dev.expo.kudo.sdk49"
     },
     "android": {
       "adaptiveIcon": {
