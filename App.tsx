@@ -5,13 +5,22 @@ import {
   useQuery,
   gql,
 } from "@apollo/client";
+import { connectPluginFromAppAsync } from "expo/devtools";
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View, Image, ScrollView } from "react-native";
+import { bindExpoPlugin } from "react-native-apollo-devtools-client";
 
 const client = new ApolloClient({
   uri: "https://flyby-router-demo.herokuapp.com/",
   cache: new InMemoryCache(),
 });
+
+(async function() {
+  if (__DEV__) {
+    const devToolsClient = await connectPluginFromAppAsync();
+    bindExpoPlugin(devToolsClient, client);
+  }
+})();
 
 const GET_LOCATIONS = gql`
   query GetLocations {

@@ -3247,6 +3247,13 @@ expo-modules-core@1.5.9:
     compare-versions "^3.4.0"
     invariant "^2.2.4"
 
+"expo-plugin-react-native-apollo-devtools@npm:@kudo-chien/expo-plugin-react-native-apollo-devtools@^0.0.2":
+  version "0.0.2"
+  resolved "https://registry.yarnpkg.com/@kudo-chien/expo-plugin-react-native-apollo-devtools/-/expo-plugin-react-native-apollo-devtools-0.0.2.tgz#4ef0982d86ba5c4049e0d2480ecf7528119507c5"
+  integrity sha512-DeNDH+BAMQt3KZYLsNRwj68ioBItGwi+gpT1+1iljF5dyQXPkKK9oBRnI+cp9nHFqmRW7J/fV87DUmFcSwek1Q==
+  dependencies:
+    react-native-apollo-devtools-client "^1.0.4"
+
 expo-splash-screen@~0.20.4:
   version "0.20.5"
   resolved "https://registry.yarnpkg.com/expo-splash-screen/-/expo-splash-screen-0.20.5.tgz#ebeba3e3977606830f74f506ab2cc25042bb7efd"
@@ -5397,6 +5404,16 @@ react-is@^17.0.1:
   version "17.0.2"
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-17.0.2.tgz#e691d4a8e9c789365655539ab372762b0efb54f0"
   integrity sha512-w2GsyukL62IJnlaff/nRegPQR94C/XXamvMWmSHRJ4y7Ts/4ocGRmTHvOs8PSE6pB3dWOrD/nueuU5sduBsQ4w==
+
+react-native-apollo-devtools-client@^1.0.4:
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/react-native-apollo-devtools-client/-/react-native-apollo-devtools-client-1.0.4.tgz#aa09836c2a5f06f4b4ffa8953c6b3145d05a7b4a"
+  integrity sha512-g/7uxtz+/D3Pvt3H2W1qrqYs1SzOrEOY2d/U6QPtelpTFK9kinQd6D9ToiwpvYZhJ1PYWlWMglKWcHp9AQmhsg==
+
+"react-native-apollo-devtools-client@npm:@kudo-chien/react-native-apollo-devtools-client@^2.0.0":
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/@kudo-chien/react-native-apollo-devtools-client/-/react-native-apollo-devtools-client-2.0.0.tgz#45ba2bbf190ceb58e4f801619cc261959687b11b"
+  integrity sha512-1h7e/eTgs31E/nhkasoI9yyvXu0bKtgKJfHmByifqG27u3h0WBWfS06nejLqDqri1Q/sYzfSxgjlmFwHMXL48g==
 
 react-native@0.72.3:
   version "0.72.3"
