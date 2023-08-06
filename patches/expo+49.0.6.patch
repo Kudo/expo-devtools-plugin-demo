@@ -1,0 +1,36 @@
+diff --git a/node_modules/expo/devtools.d.ts b/node_modules/expo/devtools.d.ts
+new file mode 100644
+index 0000000..4d26469
+--- /dev/null
++++ b/node_modules/expo/devtools.d.ts
+@@ -0,0 +1,23 @@
++declare module 'expo/devtools' {
++  import { EventSubscription } from 'fbemitter';
++
++  /**
++   * This class is used to communicate with the Expo CLI DevTools plugin.
++   */
++  export class DevToolsPluginClient {
++    private devServer;
++    private ws;
++    private eventEmitter;
++    constructor(devServer: string);
++    connectAsync(): Promise<WebSocket>;
++    close(): void;
++    sendMessage(method: string, params: any): void;
++    addMessageListener(method: string, listener: (params: any) => void): EventSubscription;
++    addMessageListenerOnce(method: string, listener: (params: any) => void): void;
++    isConnected(): boolean;
++    private handleMessage;
++  }
++
++  export function connectPluginFromDevToolsAsync(): Promise<DevToolsPluginClient>;
++  export function connectPluginFromAppAsync(): Promise<DevToolsPluginClient>;
++}
+diff --git a/node_modules/expo/devtools.js b/node_modules/expo/devtools.js
+new file mode 100644
+index 0000000..9ec4217
+--- /dev/null
++++ b/node_modules/expo/devtools.js
+@@ -0,0 +1 @@
++module.exports = require('@expo/cli/build/src/start/server/devtools');

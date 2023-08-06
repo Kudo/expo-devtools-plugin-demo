@@ -1,0 +1,157 @@
+diff --git a/node_modules/expo-modules-autolinking/build/autolinking/index.d.ts b/node_modules/expo-modules-autolinking/build/autolinking/index.d.ts
+index 6e31064..72afefb 100644
+--- a/node_modules/expo-modules-autolinking/build/autolinking/index.d.ts
++++ b/node_modules/expo-modules-autolinking/build/autolinking/index.d.ts
+@@ -1,5 +1,11 @@
+-export { findModulesAsync, } from './findModules';
+-export { resolveSearchPathsAsync, mergeLinkingOptionsAsync, } from './mergeLinkingOptions';
++import type { ModuleDescriptor, SupportedPlatform } from '../types';
++import { findModulesAsync } from './findModules';
++import { mergeLinkingOptionsAsync, resolveSearchPathsAsync } from './mergeLinkingOptions';
++import { resolveModulesAsync } from './resolveModules';
++export { findModulesAsync, mergeLinkingOptionsAsync, resolveModulesAsync, resolveSearchPathsAsync };
+ export { generatePackageListAsync } from './generatePackageList';
+-export { resolveModulesAsync } from './resolveModules';
+ export { verifySearchResults } from './verifySearchResults';
++/**
++ * Programmatic API to serve autolinked modules for Expo CLI.
++ */
++export declare function queryModulesAsync(platform: SupportedPlatform): Promise<ModuleDescriptor[]>;
+diff --git a/node_modules/expo-modules-autolinking/build/autolinking/index.js b/node_modules/expo-modules-autolinking/build/autolinking/index.js
+index 768dc8e..649fd55 100644
+--- a/node_modules/expo-modules-autolinking/build/autolinking/index.js
++++ b/node_modules/expo-modules-autolinking/build/autolinking/index.js
+@@ -1,17 +1,24 @@
+ "use strict";
+ Object.defineProperty(exports, "__esModule", { value: true });
+-exports.verifySearchResults = exports.resolveModulesAsync = exports.generatePackageListAsync = exports.mergeLinkingOptionsAsync = exports.resolveSearchPathsAsync = exports.findModulesAsync = void 0;
+-var findModules_1 = require("./findModules");
+-// NOTE(evanbacon): Used in @expo/prebuild-config
++exports.queryModulesAsync = exports.verifySearchResults = exports.generatePackageListAsync = exports.resolveSearchPathsAsync = exports.resolveModulesAsync = exports.mergeLinkingOptionsAsync = exports.findModulesAsync = void 0;
++const findModules_1 = require("./findModules");
+ Object.defineProperty(exports, "findModulesAsync", { enumerable: true, get: function () { return findModules_1.findModulesAsync; } });
+-var mergeLinkingOptions_1 = require("./mergeLinkingOptions");
+-// NOTE(evanbacon): Used in @expo/prebuild-config
+-Object.defineProperty(exports, "resolveSearchPathsAsync", { enumerable: true, get: function () { return mergeLinkingOptions_1.resolveSearchPathsAsync; } });
++const mergeLinkingOptions_1 = require("./mergeLinkingOptions");
+ Object.defineProperty(exports, "mergeLinkingOptionsAsync", { enumerable: true, get: function () { return mergeLinkingOptions_1.mergeLinkingOptionsAsync; } });
++Object.defineProperty(exports, "resolveSearchPathsAsync", { enumerable: true, get: function () { return mergeLinkingOptions_1.resolveSearchPathsAsync; } });
++const resolveModules_1 = require("./resolveModules");
++Object.defineProperty(exports, "resolveModulesAsync", { enumerable: true, get: function () { return resolveModules_1.resolveModulesAsync; } });
+ var generatePackageList_1 = require("./generatePackageList");
+ Object.defineProperty(exports, "generatePackageListAsync", { enumerable: true, get: function () { return generatePackageList_1.generatePackageListAsync; } });
+-var resolveModules_1 = require("./resolveModules");
+-Object.defineProperty(exports, "resolveModulesAsync", { enumerable: true, get: function () { return resolveModules_1.resolveModulesAsync; } });
+ var verifySearchResults_1 = require("./verifySearchResults");
+ Object.defineProperty(exports, "verifySearchResults", { enumerable: true, get: function () { return verifySearchResults_1.verifySearchResults; } });
++/**
++ * Programmatic API to serve autolinked modules for Expo CLI.
++ */
++async function queryModulesAsync(platform) {
++    const options = await (0, mergeLinkingOptions_1.mergeLinkingOptionsAsync)({ platform, searchPaths: [] });
++    const searchResults = await (0, findModules_1.findModulesAsync)(options);
++    return await (0, resolveModules_1.resolveModulesAsync)(searchResults, options);
++}
++exports.queryModulesAsync = queryModulesAsync;
+ //# sourceMappingURL=index.js.map
+\ No newline at end of file
+diff --git a/node_modules/expo-modules-autolinking/build/autolinking/index.js.map b/node_modules/expo-modules-autolinking/build/autolinking/index.js.map
+index 9dc9b1a..872135c 100644
+--- a/node_modules/expo-modules-autolinking/build/autolinking/index.js.map
++++ b/node_modules/expo-modules-autolinking/build/autolinking/index.js.map
+@@ -1 +1 @@
+-{"version":3,"file":"index.js","sourceRoot":"","sources":["../../src/autolinking/index.ts"],"names":[],"mappings":";;;AAAA,6CAGuB;AAFrB,iDAAiD;AACjD,+GAAA,gBAAgB,OAAA;AAElB,6DAI+B;AAH7B,iDAAiD;AACjD,8HAAA,uBAAuB,OAAA;AACvB,+HAAA,wBAAwB,OAAA;AAE1B,6DAAiE;AAAxD,+HAAA,wBAAwB,OAAA;AACjC,mDAAuD;AAA9C,qHAAA,mBAAmB,OAAA;AAC5B,6DAA4D;AAAnD,0HAAA,mBAAmB,OAAA","sourcesContent":["export {\n  // NOTE(evanbacon): Used in @expo/prebuild-config\n  findModulesAsync,\n} from './findModules';\nexport {\n  // NOTE(evanbacon): Used in @expo/prebuild-config\n  resolveSearchPathsAsync,\n  mergeLinkingOptionsAsync,\n} from './mergeLinkingOptions';\nexport { generatePackageListAsync } from './generatePackageList';\nexport { resolveModulesAsync } from './resolveModules';\nexport { verifySearchResults } from './verifySearchResults';\n"]}
+\ No newline at end of file
++{"version":3,"file":"index.js","sourceRoot":"","sources":["../../src/autolinking/index.ts"],"names":[],"mappings":";;;AACA,+CAAiD;AAIxC,iGAJA,8BAAgB,OAIA;AAHzB,+DAA0F;AAG/D,yGAHlB,8CAAwB,OAGkB;AAAuB,wGAHvC,6CAAuB,OAGuC;AAFjG,qDAAuD;AAEF,oGAF5C,oCAAmB,OAE4C;AACxE,6DAAiE;AAAxD,+HAAA,wBAAwB,OAAA;AACjC,6DAA4D;AAAnD,0HAAA,mBAAmB,OAAA;AAE5B;;GAEG;AACI,KAAK,UAAU,iBAAiB,CAAC,QAA2B;IACjE,MAAM,OAAO,GAAG,MAAM,IAAA,8CAAwB,EAAC,EAAE,QAAQ,EAAE,WAAW,EAAE,EAAE,EAAE,CAAC,CAAC;IAC9E,MAAM,aAAa,GAAG,MAAM,IAAA,8BAAgB,EAAC,OAAO,CAAC,CAAC;IACtD,OAAO,MAAM,IAAA,oCAAmB,EAAC,aAAa,EAAE,OAAO,CAAC,CAAC;AAC3D,CAAC;AAJD,8CAIC","sourcesContent":["import type { ModuleDescriptor, SupportedPlatform } from '../types';\nimport { findModulesAsync } from './findModules';\nimport { mergeLinkingOptionsAsync, resolveSearchPathsAsync } from './mergeLinkingOptions';\nimport { resolveModulesAsync } from './resolveModules';\n\nexport { findModulesAsync, mergeLinkingOptionsAsync, resolveModulesAsync, resolveSearchPathsAsync };\nexport { generatePackageListAsync } from './generatePackageList';\nexport { verifySearchResults } from './verifySearchResults';\n\n/**\n * Programmatic API to serve autolinked modules for Expo CLI.\n */\nexport async function queryModulesAsync(platform: SupportedPlatform): Promise<ModuleDescriptor[]> {\n  const options = await mergeLinkingOptionsAsync({ platform, searchPaths: [] });\n  const searchResults = await findModulesAsync(options);\n  return await resolveModulesAsync(searchResults, options);\n}\n"]}
+\ No newline at end of file
+diff --git a/node_modules/expo-modules-autolinking/build/platforms/devtools.d.ts b/node_modules/expo-modules-autolinking/build/platforms/devtools.d.ts
+new file mode 100644
+index 0000000..61cbf34
+--- /dev/null
++++ b/node_modules/expo-modules-autolinking/build/platforms/devtools.d.ts
+@@ -0,0 +1,2 @@
++import { ModuleDescriptorDevTools, PackageRevision } from '../types';
++export declare function resolveModuleAsync(packageName: string, revision: PackageRevision): Promise<ModuleDescriptorDevTools | null>;
+diff --git a/node_modules/expo-modules-autolinking/build/platforms/devtools.js b/node_modules/expo-modules-autolinking/build/platforms/devtools.js
+new file mode 100644
+index 0000000..68bcb4e
+--- /dev/null
++++ b/node_modules/expo-modules-autolinking/build/platforms/devtools.js
+@@ -0,0 +1,20 @@
++"use strict";
++var __importDefault = (this && this.__importDefault) || function (mod) {
++    return (mod && mod.__esModule) ? mod : { "default": mod };
++};
++Object.defineProperty(exports, "__esModule", { value: true });
++exports.resolveModuleAsync = void 0;
++const path_1 = __importDefault(require("path"));
++async function resolveModuleAsync(packageName, revision) {
++    const devtoolsConfig = revision.config?.toJSON().devtools;
++    if (devtoolsConfig == null) {
++        return null;
++    }
++    return {
++        packageName,
++        packageRoot: revision.path,
++        webpageRoot: path_1.default.join(revision.path, devtoolsConfig.webpageRoot),
++    };
++}
++exports.resolveModuleAsync = resolveModuleAsync;
++//# sourceMappingURL=devtools.js.map
+\ No newline at end of file
+diff --git a/node_modules/expo-modules-autolinking/build/platforms/devtools.js.map b/node_modules/expo-modules-autolinking/build/platforms/devtools.js.map
+new file mode 100644
+index 0000000..252bfdf
+--- /dev/null
++++ b/node_modules/expo-modules-autolinking/build/platforms/devtools.js.map
+@@ -0,0 +1 @@
++{"version":3,"file":"devtools.js","sourceRoot":"","sources":["../../src/platforms/devtools.ts"],"names":[],"mappings":";;;;;;AAAA,gDAAwB;AAIjB,KAAK,UAAU,kBAAkB,CACtC,WAAmB,EACnB,QAAyB;IAEzB,MAAM,cAAc,GAAG,QAAQ,CAAC,MAAM,EAAE,MAAM,EAAE,CAAC,QAAQ,CAAC;IAC1D,IAAI,cAAc,IAAI,IAAI,EAAE;QAC1B,OAAO,IAAI,CAAC;KACb;IAED,OAAO;QACL,WAAW;QACX,WAAW,EAAE,QAAQ,CAAC,IAAI;QAC1B,WAAW,EAAE,cAAI,CAAC,IAAI,CAAC,QAAQ,CAAC,IAAI,EAAE,cAAc,CAAC,WAAW,CAAC;KAClE,CAAC;AACJ,CAAC;AAdD,gDAcC","sourcesContent":["import path from 'path';\n\nimport { ModuleDescriptorDevTools, PackageRevision } from '../types';\n\nexport async function resolveModuleAsync(\n  packageName: string,\n  revision: PackageRevision\n): Promise<ModuleDescriptorDevTools | null> {\n  const devtoolsConfig = revision.config?.toJSON().devtools;\n  if (devtoolsConfig == null) {\n    return null;\n  }\n\n  return {\n    packageName,\n    packageRoot: revision.path,\n    webpageRoot: path.join(revision.path, devtoolsConfig.webpageRoot),\n  };\n}\n"]}
+\ No newline at end of file
+diff --git a/node_modules/expo-modules-autolinking/build/types.d.ts b/node_modules/expo-modules-autolinking/build/types.d.ts
+index 2ce78e2..33c05d7 100644
+--- a/node_modules/expo-modules-autolinking/build/types.d.ts
++++ b/node_modules/expo-modules-autolinking/build/types.d.ts
+@@ -1,5 +1,5 @@
+ import { ExpoModuleConfig } from './ExpoModuleConfig';
+-export type SupportedPlatform = 'ios' | 'android' | 'web';
++export type SupportedPlatform = 'ios' | 'android' | 'web' | 'devtools';
+ export interface SearchOptions {
+     searchPaths: string[];
+     ignorePaths?: string[] | null;
+@@ -58,7 +58,12 @@ export interface ModuleDescriptorIos {
+     reactDelegateHandlers: string[];
+     debugOnly: boolean;
+ }
+-export type ModuleDescriptor = ModuleDescriptorAndroid | ModuleDescriptorIos;
++export interface ModuleDescriptorDevTools {
++    packageName: string;
++    packageRoot: string;
++    webpageRoot: string;
++}
++export type ModuleDescriptor = ModuleDescriptorAndroid | ModuleDescriptorIos | ModuleDescriptorDevTools;
+ export interface AndroidGradlePluginDescriptor {
+     /**
+      * Gradle plugin ID
+@@ -141,4 +146,13 @@ export interface RawExpoModuleConfig {
+          */
+         gradlePlugins?: AndroidGradlePluginDescriptor[];
+     };
++    /**
++     * DevTools-specific config.
++     */
++    devtools?: {
++        /**
++         * The webpage root directory for Expo CLI DevTools to serve the web resources.
++         */
++        webpageRoot: string;
++    };
+ }
+diff --git a/node_modules/expo-modules-autolinking/build/types.js.map b/node_modules/expo-modules-autolinking/build/types.js.map
+index a58f572..d04062e 100644
+--- a/node_modules/expo-modules-autolinking/build/types.js.map
++++ b/node_modules/expo-modules-autolinking/build/types.js.map
+@@ -1 +1 @@
+-{"version":3,"file":"types.js","sourceRoot":"","sources":["../src/types.ts"],"names":[],"mappings":"","sourcesContent":["import { ExpoModuleConfig } from './ExpoModuleConfig';\n\nexport type SupportedPlatform = 'ios' | 'android' | 'web';\n\nexport interface SearchOptions {\n  // Available in the CLI\n  searchPaths: string[];\n  ignorePaths?: string[] | null;\n  exclude?: string[] | null;\n  platform: SupportedPlatform;\n  silent?: boolean;\n  nativeModulesDir?: string | null;\n\n  // Scratched from project's config\n  flags?: Record<string, any>;\n}\n\nexport interface ResolveOptions extends SearchOptions {\n  json?: boolean;\n}\n\nexport interface GenerateOptions extends ResolveOptions {\n  target: string;\n  namespace?: string;\n  empty?: boolean;\n}\n\nexport interface PatchReactImportsOptions {\n  podsRoot: string;\n  dryRun: boolean;\n}\n\nexport type PackageRevision = {\n  path: string;\n  version: string;\n  config?: ExpoModuleConfig;\n  duplicates?: PackageRevision[];\n};\n\nexport type SearchResults = {\n  [moduleName: string]: PackageRevision;\n};\n\nexport interface ModuleAndroidProjectInfo {\n  name: string;\n  sourceDir: string;\n}\n\nexport interface ModuleAndroidPluginInfo {\n  id: string;\n  sourceDir: string;\n}\n\nexport interface ModuleDescriptorAndroid {\n  packageName: string;\n  projects: ModuleAndroidProjectInfo[];\n  plugins?: ModuleAndroidPluginInfo[];\n  modules: string[];\n}\n\nexport interface ModuleIosPodspecInfo {\n  podName: string;\n  podspecDir: string;\n}\nexport interface ModuleDescriptorIos {\n  packageName: string;\n  pods: ModuleIosPodspecInfo[];\n  flags: Record<string, any> | undefined;\n  swiftModuleNames: string[];\n  modules: string[];\n  appDelegateSubscribers: string[];\n  reactDelegateHandlers: string[];\n  debugOnly: boolean;\n}\n\nexport type ModuleDescriptor = ModuleDescriptorAndroid | ModuleDescriptorIos;\n\nexport interface AndroidGradlePluginDescriptor {\n  /**\n   * Gradle plugin ID\n   */\n  id: string;\n\n  /**\n   * Artifact group\n   */\n  group: string;\n\n  /**\n   * Relative path to the gradle plugin directory\n   */\n  sourceDir: string;\n}\n\n/**\n * Represents a raw config from `expo-module.json`.\n */\nexport interface RawExpoModuleConfig {\n  /**\n   * An array of supported platforms.\n   */\n  platforms?: SupportedPlatform[];\n\n  /**\n   * iOS-specific config.\n   */\n  ios?: {\n    /**\n     * Names of Swift native modules classes to put to the generated modules provider file.\n     */\n    modules?: string[];\n\n    /**\n     * Names of Swift native modules classes to put to the generated modules provider file.\n     * @deprecated Deprecated in favor of `modules`. Might be removed in the future releases.\n     */\n    modulesClassNames?: string[];\n\n    /**\n     * Names of Swift classes that hooks into `ExpoAppDelegate` to receive AppDelegate life-cycle events.\n     */\n    appDelegateSubscribers?: string[];\n\n    /**\n     * Names of Swift classes that implement `ExpoReactDelegateHandler` to hook React instance creation.\n     */\n    reactDelegateHandlers?: string[];\n\n    /**\n     * Podspec relative path.\n     * To have multiple podspecs, string array type is also supported.\n     */\n    podspecPath?: string | string[];\n\n    /**\n     * Swift product module name. If empty, the pod name is used for Swift imports.\n     * To have multiple modules, string array is also supported.\n     */\n    swiftModuleName?: string | string[];\n\n    /**\n     * Whether this module will be added only to the debug configuration.\n     * Defaults to false.\n     */\n    debugOnly?: boolean;\n  };\n\n  /**\n   * Android-specific config.\n   */\n  android?: {\n    /**\n     * Full names (package + class name) of Kotlin native modules classes to put to the generated package provider file.\n     */\n    modules?: string[];\n\n    /**\n     * Full names (package + class name) of Kotlin native modules classes to put to the generated package provider file.\n     * @deprecated Deprecated in favor of `modules`. Might be removed in the future releases.\n     */\n    modulesClassNames?: string[];\n\n    /**\n     * build.gradle relative path.\n     * To have multiple build.gradle projects, string array type is also supported.\n     */\n    gradlePath?: string | string[];\n\n    /**\n     * Gradle plugins.\n     */\n    gradlePlugins?: AndroidGradlePluginDescriptor[];\n  };\n}\n"]}
+\ No newline at end of file
++{"version":3,"file":"types.js","sourceRoot":"","sources":["../src/types.ts"],"names":[],"mappings":"","sourcesContent":["import { ExpoModuleConfig } from './ExpoModuleConfig';\n\nexport type SupportedPlatform = 'ios' | 'android' | 'web' | 'devtools';\n\nexport interface SearchOptions {\n  // Available in the CLI\n  searchPaths: string[];\n  ignorePaths?: string[] | null;\n  exclude?: string[] | null;\n  platform: SupportedPlatform;\n  silent?: boolean;\n  nativeModulesDir?: string | null;\n\n  // Scratched from project's config\n  flags?: Record<string, any>;\n}\n\nexport interface ResolveOptions extends SearchOptions {\n  json?: boolean;\n}\n\nexport interface GenerateOptions extends ResolveOptions {\n  target: string;\n  namespace?: string;\n  empty?: boolean;\n}\n\nexport interface PatchReactImportsOptions {\n  podsRoot: string;\n  dryRun: boolean;\n}\n\nexport type PackageRevision = {\n  path: string;\n  version: string;\n  config?: ExpoModuleConfig;\n  duplicates?: PackageRevision[];\n};\n\nexport type SearchResults = {\n  [moduleName: string]: PackageRevision;\n};\n\nexport interface ModuleAndroidProjectInfo {\n  name: string;\n  sourceDir: string;\n}\n\nexport interface ModuleAndroidPluginInfo {\n  id: string;\n  sourceDir: string;\n}\n\nexport interface ModuleDescriptorAndroid {\n  packageName: string;\n  projects: ModuleAndroidProjectInfo[];\n  plugins?: ModuleAndroidPluginInfo[];\n  modules: string[];\n}\n\nexport interface ModuleIosPodspecInfo {\n  podName: string;\n  podspecDir: string;\n}\nexport interface ModuleDescriptorIos {\n  packageName: string;\n  pods: ModuleIosPodspecInfo[];\n  flags: Record<string, any> | undefined;\n  swiftModuleNames: string[];\n  modules: string[];\n  appDelegateSubscribers: string[];\n  reactDelegateHandlers: string[];\n  debugOnly: boolean;\n}\n\nexport interface ModuleDescriptorDevTools {\n  packageName: string;\n  packageRoot: string;\n  webpageRoot: string;\n}\n\nexport type ModuleDescriptor =\n  | ModuleDescriptorAndroid\n  | ModuleDescriptorIos\n  | ModuleDescriptorDevTools;\n\nexport interface AndroidGradlePluginDescriptor {\n  /**\n   * Gradle plugin ID\n   */\n  id: string;\n\n  /**\n   * Artifact group\n   */\n  group: string;\n\n  /**\n   * Relative path to the gradle plugin directory\n   */\n  sourceDir: string;\n}\n\n/**\n * Represents a raw config from `expo-module.json`.\n */\nexport interface RawExpoModuleConfig {\n  /**\n   * An array of supported platforms.\n   */\n  platforms?: SupportedPlatform[];\n\n  /**\n   * iOS-specific config.\n   */\n  ios?: {\n    /**\n     * Names of Swift native modules classes to put to the generated modules provider file.\n     */\n    modules?: string[];\n\n    /**\n     * Names of Swift native modules classes to put to the generated modules provider file.\n     * @deprecated Deprecated in favor of `modules`. Might be removed in the future releases.\n     */\n    modulesClassNames?: string[];\n\n    /**\n     * Names of Swift classes that hooks into `ExpoAppDelegate` to receive AppDelegate life-cycle events.\n     */\n    appDelegateSubscribers?: string[];\n\n    /**\n     * Names of Swift classes that implement `ExpoReactDelegateHandler` to hook React instance creation.\n     */\n    reactDelegateHandlers?: string[];\n\n    /**\n     * Podspec relative path.\n     * To have multiple podspecs, string array type is also supported.\n     */\n    podspecPath?: string | string[];\n\n    /**\n     * Swift product module name. If empty, the pod name is used for Swift imports.\n     * To have multiple modules, string array is also supported.\n     */\n    swiftModuleName?: string | string[];\n\n    /**\n     * Whether this module will be added only to the debug configuration.\n     * Defaults to false.\n     */\n    debugOnly?: boolean;\n  };\n\n  /**\n   * Android-specific config.\n   */\n  android?: {\n    /**\n     * Full names (package + class name) of Kotlin native modules classes to put to the generated package provider file.\n     */\n    modules?: string[];\n\n    /**\n     * Full names (package + class name) of Kotlin native modules classes to put to the generated package provider file.\n     * @deprecated Deprecated in favor of `modules`. Might be removed in the future releases.\n     */\n    modulesClassNames?: string[];\n\n    /**\n     * build.gradle relative path.\n     * To have multiple build.gradle projects, string array type is also supported.\n     */\n    gradlePath?: string | string[];\n\n    /**\n     * Gradle plugins.\n     */\n    gradlePlugins?: AndroidGradlePluginDescriptor[];\n  };\n\n  /**\n   * DevTools-specific config.\n   */\n  devtools?: {\n    /**\n     * The webpage root directory for Expo CLI DevTools to serve the web resources.\n     */\n    webpageRoot: string;\n  };\n}\n"]}
+\ No newline at end of file
