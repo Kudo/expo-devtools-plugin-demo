@@ -113,7 +113,7 @@ That's it! With these changes, you should be able to use the devtools plugin wit
     }
     ```
 
-### `DevToolsPluginClient` API
+## `DevToolsPluginClient` API
 
 The `expo/devtools` exports APIs for the message communication between the plugin and the app. You can check the API declarations here. Please note that the APIs are temporary and may change from official releases.
 
