@@ -18,10 +18,10 @@ index 6e31064..72afefb 100644
 + */
 +export declare function queryModulesAsync(platform: SupportedPlatform): Promise<ModuleDescriptor[]>;
 diff --git a/node_modules/expo-modules-autolinking/build/autolinking/index.js b/node_modules/expo-modules-autolinking/build/autolinking/index.js
-index 768dc8e..649fd55 100644
+index 768dc8e..471ea6b 100644
 --- a/node_modules/expo-modules-autolinking/build/autolinking/index.js
 +++ b/node_modules/expo-modules-autolinking/build/autolinking/index.js
-@@ -1,17 +1,24 @@
+@@ -1,17 +1,35 @@
  "use strict";
  Object.defineProperty(exports, "__esModule", { value: true });
 -exports.verifySearchResults = exports.resolveModulesAsync = exports.generatePackageListAsync = exports.mergeLinkingOptionsAsync = exports.resolveSearchPathsAsync = exports.findModulesAsync = void 0;
@@ -49,9 +49,20 @@ index 768dc8e..649fd55 100644
 + */
 +async function queryModulesAsync(platform) {
 +    const options = await (0, mergeLinkingOptions_1.mergeLinkingOptionsAsync)({ platform, searchPaths: [] });
-+    const searchResults = await (0, findModules_1.findModulesAsync)(options);
++
++    // Original code:
++    // const searchResults = await (0, findModules_1.findModulesAsync)(options);
++    // This doesn't seem to actually search the second search path in the searchPaths array
++    //
++    let searchResults = {};
++    for (let path of options.searchPaths) {
++      const results = await (0, findModules_1.findModulesAsync)({...options, searchPaths: [path]});
++      searchResults = {...searchResults, ...results};
++    };
++
 +    return await (0, resolveModules_1.resolveModulesAsync)(searchResults, options);
 +}
++exports.queryModulesAsync = queryModulesAsync;
 +exports.queryModulesAsync = queryModulesAsync;
  //# sourceMappingURL=index.js.map
 \ No newline at end of file
