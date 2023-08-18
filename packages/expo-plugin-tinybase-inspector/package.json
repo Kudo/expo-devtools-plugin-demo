@@ -1,0 +1,21 @@
+{
+  "name": "expo-plugin-tinybase-inspector",
+  "homepage": "/_expo/plugins/expo-plugin-tinybase-inspector",
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build && cp -R public/* dist/static/ && sed -i '' 's/type=\"module\" crossorigin//g' dist/index.html",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "@types/react-dom": "^18.2.6",
+    "typescript": "^5.1.6",
+    "vite": "^4.3.9"
+  },
+  "dependencies": {
+    "@vitejs/plugin-react": "^4.0.1",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "tinybase": "^4.1.0"
+  }
+}

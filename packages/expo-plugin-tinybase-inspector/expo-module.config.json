@@ -1,0 +1,7 @@
+{
+  "name": "expo-plugin-tinybase-inspector",
+  "platforms": ["devtools"],
+  "devtools": {
+    "webpageRoot": "dist"
+  }
+}
