@@ -1,13 +1,13 @@
 {
   "name": "expo-plugin-helloworld",
   "version": "1.0.0",
-  "main": "node_modules/expo/AppEntry.js",
   "homepage": "/_expo/plugins/expo-plugin-helloworld",
   "scripts": {
     "start": "expo start",
     "android": "expo start --android",
     "ios": "expo start --ios",
-    "web": "expo start --web"
+    "web": "expo start --web",
+    "build": "rm -rf dist web-build && expo export:web && mv web-build dist"
   },
   "dependencies": {
     "expo": "~49.0.7",

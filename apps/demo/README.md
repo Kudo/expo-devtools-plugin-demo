@@ -42,7 +42,7 @@ That's it! With these changes, you should be able to use the devtools plugin wit
 
 2. Update **package.json**
 
-    - Move all `dependencies` into `devDependencies`, given that we will `export:web` later. Most dependencies are not necessary for the app.
+    - Move all `dependencies` into `devDependencies`, given that we will `expo export:web` later. Most dependencies are not necessary for the app.
     - Add `homepage` field to define the exported web base URL: `"homepage": "/_expo/plugins/expo-plugin-helloworld"`. Note that URL should be `/_expo/plugins/{pluginName}`.
 
 3. Use the [`connectPluginFromDevToolsAsync` API](#devtoolspluginclient-api) to send/receive messages
@@ -61,7 +61,7 @@ That's it! With these changes, you should be able to use the devtools plugin wit
 4. Export web assets
 
     ```sh
-    $ npx export:web
+    $ npx expo export:web
     $ mv web-build dist
     ```
 
