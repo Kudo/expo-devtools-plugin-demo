@@ -1,13 +1,21 @@
-import { createStore } from "tinybase";
+import { createStore, ValueOrUndefined } from "tinybase/debug";
 import {
   useCreateStore,
   useTables,
   useValues,
   Provider,
+  useAddRowCallback,
+  useSetValueCallback,
 } from "tinybase/debug/ui-react";
 import { StoreInspector } from "tinybase/debug/ui-react-dom";
-import { Buttons } from "./Buttons";
-import { Details } from "./Details";
+
+// @ts-ignore
+// import { connectPluginFromDevToolsAsync } from "expo/devtools";
+
+// (async function () {
+//   const client = await connectPluginFromDevToolsAsync();
+//   client.sendMessage("ping", { from: "expo-plugin-tinybase-inspector" });
+// })();
 
 export const App = () => {
   const store = useCreateStore(() => {
@@ -35,3 +43,36 @@ export const App = () => {
 };
 
 const Pane = () => <StoreInspector />;
+
+// Convenience function for generating a random integer
+const getRandom = (max = 100) => Math.floor(Math.random() * max);
+
+const Buttons = () => {
+  // Attach events to the buttons to mutate the data in the TinyBase Store
+  const handleCount = useSetValueCallback(
+    "counter",
+    () => (value: ValueOrUndefined) => ((value ?? 0) as number) + 1
+  );
+  const handleRandom = useSetValueCallback("random", () => getRandom());
+  const handleAddPet = useAddRowCallback("pets", (_, store) => ({
+    name: ["fido", "felix", "bubbles", "lowly", "polly"][getRandom(5)],
+    species: store.getRowIds("species")[getRandom(5)],
+  }));
+
+  return (
+    <div id="buttons">
+      <button onClick={handleCount}>Increment number</button>
+      <button onClick={handleRandom}>Random number</button>
+      <button onClick={handleAddPet}>Add a pet</button>
+    </div>
+  );
+};
+
+const Details = ({ label, hook }: { label: string; hook: () => any }) => {
+  return (
+    <details open>
+      <summary>{label}</summary>
+      <pre>{JSON.stringify(hook(), null, 2)}</pre>
+    </details>
+  );
+};
