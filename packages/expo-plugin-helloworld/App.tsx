@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { createStore, ValueOrUndefined } from "tinybase/debug";
 import {
   useCreateStore,
@@ -10,14 +11,29 @@ import {
 import { StoreInspector } from "tinybase/debug/ui-react-dom";
 
 // @ts-ignore
-// import { connectPluginFromDevToolsAsync } from "expo/devtools";
+import { connectPluginFromDevToolsAsync } from "expo/devtools";
 
-// (async function () {
-//   const client = await connectPluginFromDevToolsAsync();
-//   client.sendMessage("ping", { from: "expo-plugin-tinybase-inspector" });
-// })();
+(async function () {
+  const client = await connectPluginFromDevToolsAsync();
+  client.sendMessage("ping", { from: "expo-plugin-tinybase-inspector" });
+})();
 
-export const App = () => {
+export default function App() {
+  useEffect(() => {
+    async function init() {
+      const client = await connectPluginFromDevToolsAsync();
+      // Ping pong
+      client.addMessageListener("pong", (data) => {
+        console.log("receiving pong", data);
+      });
+
+      // Set some message data
+      client.addMessageListener("update", (data) => {
+        console.log("receiving update", data);
+      });
+    }
+    init();
+  }, []);
   const store = useCreateStore(() => {
     // Create the TinyBase Store and initialize the Store's data
     return createStore()
@@ -40,7 +56,7 @@ export const App = () => {
       <Details label="Tables" hook={useTables} />
     </Provider>
   );
-};
+}
 
 const Pane = () => <StoreInspector />;
 

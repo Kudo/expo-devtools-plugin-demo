@@ -1,22 +1,25 @@
 {
   "name": "expo-plugin-tinybase-inspector",
-  "homepage": "/_expo/plugins/expo-plugin-tinybase-inspector",
   "version": "1.0.0",
+  "homepage": "/_expo/plugins/expo-plugin-tinybase-inspector",
   "scripts": {
-    "dev": "vite",
-    "build": "tsc && vite build && cp -R public/* dist/static/ && sed -i '' 's/type=\"module\" crossorigin//g' dist/index.html",
-    "preview": "vite preview"
-  },
-  "devDependencies": {
-    "@types/react-dom": "^18.2.6",
-    "typescript": "^5.1.6",
-    "vite": "^4.3.9"
+    "start": "expo start",
+    "android": "expo start --android",
+    "ios": "expo start --ios",
+    "web": "expo start --web",
+    "build": "rm -rf dist web-build && expo export:web && mv web-build dist"
   },
   "dependencies": {
-    "@vitejs/plugin-react": "^4.0.1",
-    "expo": "^49.0.7",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "tinybase": "^4.1.0"
-  }
+    "expo": "~49.0.7",
+    "expo-status-bar": "~1.6.0",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "react-native": "0.72.3",
+    "react-native-web": "~0.19.6"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.20.0",
+    "@expo/webpack-config": "^18.1.2"
+  },
+  "private": true
 }
