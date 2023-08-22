@@ -1,40 +1,48 @@
+import { useEffect } from "react";
 import { createStore } from "tinybase";
 import { Button, Text, View } from "react-native";
 import { useValue, Provider } from "tinybase/lib/ui-react";
 import { connectPluginFromAppAsync } from "expo/devtools";
 
-// Async wrapper
-let _client = connectPluginFromAppAsync();
+const store = createStore().setValue("counter", 0)
+const client = connectPluginFromAppAsync();
+
 async function getClientAsync() {
-  return await _client;
+  return await client;
 }
 
-// Initial ping
-(async function () {
+/** Silly: sync the full store every time something changes **/
+async function storeTransactionListener() {
   const client = await getClientAsync();
-  client.sendMessage("pong", { from: "app" });
-  client.addMessageListener("ping", () => {
-    client.sendMessage("pong", { from: "app" });
-  });
-})();
-
-// Wrapper around the client to make it async
-async function sendMessageAsync(message: string) {
-  const client = await getClientAsync();
-  client.sendMessage("update", { message });
+  client.sendMessage("@tinybase-inspector/update", store.getJson());
 }
-
-// Initialize the Tinybase store
-const store = createStore();
-store.setValue("counter", 0);
-
-// Listen for changes to the counter value, send them to the devtools
-store.addValueListener("counter", (store, valueId, newVal, oldValue) => {
-  sendMessageAsync(`Value ${valueId} changed from ${oldValue} to ${newVal}`);
-});
 
 function Main() {
   const count = useValue("counter");
+
+  useEffect(() => {
+    let editListener;
+
+    /* Sync the full store on init */
+    (async function() {
+      const client = await getClientAsync();
+      client.sendMessage("@tinybase-inspector/init", store.getJson());
+
+      editListener = client.addMessageListener("@tinybase-inspector/edit", (data) => {
+        store.setJson(data);
+      });
+    })();
+
+
+    const listenerId = store.addDidFinishTransactionListener(
+      storeTransactionListener
+    );
+
+    return () => {
+      store.delListener(listenerId);
+      editListener?.remove();
+    };
+  }, []);
 
   return (
     <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
