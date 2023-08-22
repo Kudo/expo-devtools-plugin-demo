@@ -10,7 +10,6 @@
   "dependencies": {
     "@apollo/client": "^3.7.17",
     "expo": "~49.0.7",
-    "expo-dev-client": "~2.4.6",
     "expo-plugin-react-native-apollo-devtools": "npm:@kudo-chien/expo-plugin-react-native-apollo-devtools@^0.0.2",
     "expo-splash-screen": "~0.20.4",
     "expo-status-bar": "~1.6.0",

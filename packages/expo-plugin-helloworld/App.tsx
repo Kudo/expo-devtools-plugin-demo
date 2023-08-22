@@ -1,94 +1,71 @@
-import { useEffect } from "react";
-import { createStore, ValueOrUndefined } from "tinybase/debug";
-import {
-  useCreateStore,
-  useTables,
-  useValues,
-  Provider,
-  useAddRowCallback,
-  useSetValueCallback,
-} from "tinybase/debug/ui-react";
-import { StoreInspector } from "tinybase/debug/ui-react-dom";
-
-// @ts-ignore
+import { useState, useEffect } from "react";
+import { StatusBar } from "expo-status-bar";
+import { Button, StyleSheet, Text, View } from "react-native";
 import { connectPluginFromDevToolsAsync } from "expo/devtools";
 
-(async function () {
-  const client = await connectPluginFromDevToolsAsync();
-  client.sendMessage("ping", { from: "expo-plugin-tinybase-inspector" });
-})();
+let client = connectPluginFromDevToolsAsync();
+async function getClientAsync() {
+  return await client;
+}
+
+async function addMessageListenerAsync(messageType, callback) {
+  const client = await getClientAsync();
+  client.addMessageListener(messageType, callback);
+}
+
+async function sendMessageAsync(messageType, data) {
+  const client = await getClientAsync();
+  client.sendMessage(messageType, data);
+}
 
 export default function App() {
-  useEffect(() => {
-    async function init() {
-      const client = await connectPluginFromDevToolsAsync();
-      // Ping pong
-      client.addMessageListener("pong", (data) => {
-        console.log("receiving pong", data);
-      });
+  const [message, setMessage] = useState(null);
 
-      // Set some message data
-      client.addMessageListener("update", (data) => {
-        console.log("receiving update", data);
-      });
-    }
-    init();
+  useEffect(() => {
+    addMessageListenerAsync("ping", (data) => {
+      sendMessageAsync("pong", { from: "expo-plugin-helloworld" });
+      alert(`ping from client: ${JSON.stringify(data)}`);
+    });
+
+    addMessageListenerAsync("pong", (data) => {
+      alert(`pong from client: ${JSON.stringify(data)}`);
+    });
+
+    // Set some message data
+    addMessageListenerAsync("update", (data) => {
+      setMessage(data);
+    });
+
+    // Should probably clean these listeners up..
   }, []);
-  const store = useCreateStore(() => {
-    // Create the TinyBase Store and initialize the Store's data
-    return createStore()
-      .setValue("counter", 0)
-      .setRow("pets", "0", { name: "fido", species: "dog" })
-      .setTable("species", {
-        dog: { price: 5 },
-        cat: { price: 4 },
-        fish: { price: 2 },
-        worm: { price: 1 },
-        parrot: { price: 3 },
-      });
-  });
 
   return (
-    <Provider store={store}>
-      <Pane />
-      <Buttons />
-      <Details label="Values" hook={useValues} />
-      <Details label="Tables" hook={useTables} />
-    </Provider>
+    <View style={styles.container}>
+      <Text style={{ fontSize: 30, marginBottom: 50 }}>
+        Hello world plugin!
+      </Text>
+      {message ? (
+        <Text>{JSON.stringify(message)}</Text>
+      ) : (
+        <Text>Waiting for counter state change...</Text>
+      )}
+      <View style={{ marginTop: 20}} />
+      <Button
+        title="Ping client"
+        onPress={() =>
+          sendMessageAsync("ping", { from: "expo-plugin-helloworld/button" })
+        }
+      />
+      <StatusBar style="auto" />
+    </View>
   );
 }
 
-const Pane = () => <StoreInspector />;
-
-// Convenience function for generating a random integer
-const getRandom = (max = 100) => Math.floor(Math.random() * max);
-
-const Buttons = () => {
-  // Attach events to the buttons to mutate the data in the TinyBase Store
-  const handleCount = useSetValueCallback(
-    "counter",
-    () => (value: ValueOrUndefined) => ((value ?? 0) as number) + 1
-  );
-  const handleRandom = useSetValueCallback("random", () => getRandom());
-  const handleAddPet = useAddRowCallback("pets", (_, store) => ({
-    name: ["fido", "felix", "bubbles", "lowly", "polly"][getRandom(5)],
-    species: store.getRowIds("species")[getRandom(5)],
-  }));
-
-  return (
-    <div id="buttons">
-      <button onClick={handleCount}>Increment number</button>
-      <button onClick={handleRandom}>Random number</button>
-      <button onClick={handleAddPet}>Add a pet</button>
-    </div>
-  );
-};
-
-const Details = ({ label, hook }: { label: string; hook: () => any }) => {
-  return (
-    <details open>
-      <summary>{label}</summary>
-      <pre>{JSON.stringify(hook(), null, 2)}</pre>
-    </details>
-  );
-};
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "#fff",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+});
