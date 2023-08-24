@@ -1,21 +1,14 @@
-import {
-  ApolloClient,
-  InMemoryCache,
-  ApolloProvider,
-  useQuery,
-  gql,
-} from "@apollo/client";
-import { connectPluginFromAppAsync } from "expo/devtools";
-import { StatusBar } from "expo-status-bar";
+import { ApolloProvider, ApolloClient, InMemoryCache, useQuery, gql } from "@apollo/client";
 import { StyleSheet, Text, View, Image, ScrollView } from "react-native";
 import { bindExpoPlugin } from "react-native-apollo-devtools-client";
+import { connectPluginFromAppAsync } from "expo/devtools";
 
 const client = new ApolloClient({
   uri: "https://flyby-router-demo.herokuapp.com/",
   cache: new InMemoryCache(),
 });
 
-(async function() {
+(async function () {
   if (__DEV__) {
     const devToolsClient = await connectPluginFromAppAsync();
     bindExpoPlugin(devToolsClient, client);
@@ -42,7 +35,7 @@ export function Main() {
   if (error) {
     return <Text>Error: </Text>;
   }
-  return data?.locations.map(({ id, name, description, photo }) => (
+  const contents = data?.locations.map(({ id, name, description, photo }) => (
     <View key={id} style={styles.item}>
       <Text style={styles.name}>{name}</Text>
       <Image source={{ uri: photo }} style={styles.photo} />
@@ -50,17 +43,14 @@ export function Main() {
       <Text style={styles.description}>{description}</Text>
     </View>
   ));
+
+  return <ScrollView>{contents}</ScrollView>;
 }
 
-export default function App() {
+export default function ApolloDemo() {
   return (
     <ApolloProvider client={client}>
-      <View style={styles.container}>
-        <ScrollView>
-          <Main />
-        </ScrollView>
-        <StatusBar style="auto" />
-      </View>
+      <Main />
     </ApolloProvider>
   );
 }

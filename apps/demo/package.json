@@ -1,0 +1,28 @@
+{
+  "name": "devtools-plugin-demo",
+  "version": "1.0.0",
+  "scripts": {
+    "start": "expo start",
+    "android": "expo run:android",
+    "ios": "expo run:ios",
+    "web": "expo start --web"
+  },
+  "dependencies": {
+    "@apollo/client": "^3.7.17",
+    "expo": "~49.0.7",
+    "expo-plugin-react-native-apollo-devtools": "npm:@kudo-chien/expo-plugin-react-native-apollo-devtools@^0.0.2",
+    "expo-splash-screen": "~0.20.4",
+    "expo-status-bar": "~1.6.0",
+    "graphql": "^16.7.1",
+    "react": "18.2.0",
+    "react-native": "0.72.3",
+    "react-native-apollo-devtools-client": "npm:@kudo-chien/react-native-apollo-devtools-client@^2.0.0",
+    "tinybase": "^4.1.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.20.0",
+    "@types/react": "~18.2.14",
+    "typescript": "^5.1.3"
+  },
+  "private": true
+}

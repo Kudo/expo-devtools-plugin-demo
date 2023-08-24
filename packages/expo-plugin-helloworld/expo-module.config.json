@@ -1,0 +1,7 @@
+{
+  "name": "expo-plugin-helloworld",
+  "platforms": ["devtools"],
+  "devtools": {
+    "webpageRoot": "dist"
+  }
+}
