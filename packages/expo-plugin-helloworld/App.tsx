@@ -1,7 +1,7 @@
-import { useState, useEffect } from "react";
-import { StatusBar } from "expo-status-bar";
-import { Button, StyleSheet, Text, View } from "react-native";
-import { connectPluginFromDevToolsAsync } from "expo/devtools";
+import { useState, useEffect } from 'react';
+import { StatusBar } from 'expo-status-bar';
+import { Button, StyleSheet, Text, View } from 'react-native';
+import { connectPluginFromDevToolsAsync } from 'expo/devtools';
 
 let client = connectPluginFromDevToolsAsync();
 async function getClientAsync() {
@@ -22,17 +22,17 @@ export default function App() {
   const [message, setMessage] = useState(null);
 
   useEffect(() => {
-    addMessageListenerAsync("ping", (data) => {
-      sendMessageAsync("pong", { from: "expo-plugin-helloworld" });
+    addMessageListenerAsync('ping', (data) => {
+      sendMessageAsync('pong', { from: 'expo-plugin-helloworld' });
       alert(`ping from client: ${JSON.stringify(data)}`);
     });
 
-    addMessageListenerAsync("pong", (data) => {
+    addMessageListenerAsync('pong', (data) => {
       alert(`pong from client: ${JSON.stringify(data)}`);
     });
 
     // Set some message data
-    addMessageListenerAsync("update", (data) => {
+    addMessageListenerAsync('update', (data) => {
       setMessage(data);
     });
 
@@ -41,20 +41,16 @@ export default function App() {
 
   return (
     <View style={styles.container}>
-      <Text style={{ fontSize: 30, marginBottom: 50 }}>
-        Hello world plugin!
-      </Text>
+      <Text style={{ fontSize: 30, marginBottom: 50 }}>Hello world plugin!</Text>
       {message ? (
         <Text>{JSON.stringify(message)}</Text>
       ) : (
         <Text>Waiting for counter state change...</Text>
       )}
-      <View style={{ marginTop: 20}} />
+      <View style={{ marginTop: 20 }} />
       <Button
         title="Ping client"
-        onPress={() =>
-          sendMessageAsync("ping", { from: "expo-plugin-helloworld/button" })
-        }
+        onPress={() => sendMessageAsync('ping', { from: 'expo-plugin-helloworld/button' })}
       />
       <StatusBar style="auto" />
     </View>
@@ -64,8 +60,8 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });

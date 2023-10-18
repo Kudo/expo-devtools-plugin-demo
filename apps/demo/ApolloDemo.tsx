@@ -1,10 +1,10 @@
-import { ApolloProvider, ApolloClient, InMemoryCache, useQuery, gql } from "@apollo/client";
-import { StyleSheet, Text, View, Image, ScrollView } from "react-native";
-import { bindExpoPlugin } from "react-native-apollo-devtools-client";
-import { connectPluginFromAppAsync } from "expo/devtools";
+import { ApolloProvider, ApolloClient, InMemoryCache, useQuery, gql } from '@apollo/client';
+import { StyleSheet, Text, View, Image, ScrollView } from 'react-native';
+import { bindExpoPlugin } from 'react-native-apollo-devtools-client';
+import { connectPluginFromAppAsync } from 'expo/devtools';
 
 const client = new ApolloClient({
-  uri: "https://flyby-router-demo.herokuapp.com/",
+  uri: 'https://flyby-router-demo.herokuapp.com/',
   cache: new InMemoryCache(),
 });
 
@@ -58,23 +58,23 @@ export default function ApolloDemo() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
-    justifyContent: "center",
+    backgroundColor: '#fff',
+    justifyContent: 'center',
     marginTop: 60,
   },
   item: {
     padding: 8,
     marginVertical: 16,
-    flexDirection: "column",
+    flexDirection: 'column',
   },
   name: {
     fontSize: 24,
-    fontWeight: "bold",
+    fontWeight: 'bold',
   },
   photo: {
     width: 350,
     height: 200,
-    alignSelf: "center",
+    alignSelf: 'center',
     marginVertical: 8,
   },
   aboutCaption: {

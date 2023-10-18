@@ -1,8 +1,8 @@
-import { useEffect } from "react";
-import { createStore } from "tinybase";
-import { Button, Text, View } from "react-native";
-import { useValue, Provider } from "tinybase/lib/ui-react";
-import { connectPluginFromAppAsync } from "expo/devtools";
+import { useEffect } from 'react';
+import { createStore } from 'tinybase';
+import { Button, Text, View } from 'react-native';
+import { useValue, Provider } from 'tinybase/lib/ui-react';
+import { connectPluginFromAppAsync } from 'expo/devtools';
 
 // Async wrapper
 let _client = connectPluginFromAppAsync();
@@ -18,47 +18,42 @@ async function sendMessageAsync(message: string, data: any) {
 
 // Initialize the Tinybase store
 const store = createStore();
-store.setValue("counter", 0);
+store.setValue('counter', 0);
 
 // Listen for changes to the counter value, send them to the devtools
-store.addValueListener("counter", (_valueId, newVal, oldValue) => {
-  sendMessageAsync("update", {
+store.addValueListener('counter', (_valueId, newVal, oldValue) => {
+  sendMessageAsync('update', {
     message: `Value changed from ${oldValue} to ${newVal}`,
   });
 });
 
 function Main() {
-  const count = useValue("counter");
+  const count = useValue('counter');
 
   useEffect(() => {
     (async function () {
       const client = await getClientAsync();
 
-      client.addMessageListener("ping", (data) => {
+      client.addMessageListener('ping', (data) => {
         alert(`ping from devtools: ${JSON.stringify(data)}`);
-        client.sendMessage("pong", { from: "app" });
+        client.sendMessage('pong', { from: 'app' });
       });
 
-      client.addMessageListener("pong", (data) => {
+      client.addMessageListener('pong', (data) => {
         alert(`pong from devtools: ${JSON.stringify(data)}`);
       });
     })();
   }, []);
 
   return (
-    <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
+    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
       <Text>Counter: {count}</Text>
       <Button
         title="Increment"
-        onPress={() =>
-          store.setValue("counter", parseInt(count.toString(), 10) + 1)
-        }
+        onPress={() => store.setValue('counter', parseInt(count.toString(), 10) + 1)}
       />
 
-      <Button
-        title="Ping"
-        onPress={() => sendMessageAsync("ping", { from: "app/button" })}
-      />
+      <Button title="Ping" onPress={() => sendMessageAsync('ping', { from: 'app/button' })} />
     </View>
   );
 }

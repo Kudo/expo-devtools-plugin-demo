@@ -1,10 +1,10 @@
-import { useEffect } from "react";
-import { createStore } from "tinybase/debug";
-import { Provider } from "tinybase/debug/ui-react";
-import { StoreInspector } from "tinybase/debug/ui-react-dom";
+import { useEffect } from 'react';
+import { createStore } from 'tinybase/debug';
+import { Provider } from 'tinybase/debug/ui-react';
+import { StoreInspector } from 'tinybase/debug/ui-react-dom';
 
 // @ts-ignore
-import { connectPluginFromDevToolsAsync } from "expo/devtools";
+import { connectPluginFromDevToolsAsync } from 'expo/devtools';
 
 const store = createStore();
 const client = connectPluginFromDevToolsAsync();
@@ -15,7 +15,7 @@ async function getClientAsync() {
 
 async function sendEditsAsync() {
   const client = await getClientAsync();
-  client.sendMessage("@tinybase-inspector/edit", store.getJson());
+  client.sendMessage('@tinybase-inspector/edit', store.getJson());
 }
 
 let __ignoreStoreUpdates = false;
@@ -25,13 +25,13 @@ export default function App() {
     async function initAsync() {
       const client = await getClientAsync();
 
-      client.addMessageListener("@tinybase-inspector/init", (data) => {
+      client.addMessageListener('@tinybase-inspector/init', (data) => {
         __ignoreStoreUpdates = true;
         store.setJson(data);
         __ignoreStoreUpdates = false;
       });
 
-      client.addMessageListener("@tinybase-inspector/update", (data) => {
+      client.addMessageListener('@tinybase-inspector/update', (data) => {
         __ignoreStoreUpdates = true;
         store.setJson(data);
         __ignoreStoreUpdates = false;
