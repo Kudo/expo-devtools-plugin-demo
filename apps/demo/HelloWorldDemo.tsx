@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { createStore } from 'tinybase';
 import { Button, Text, View } from 'react-native';
 import { useValue, Provider } from 'tinybase/lib/ui-react';
-import { useDevToolsPluginClient } from 'expo';
+import { useDevToolsPluginClient } from 'expo/devtools';
 
 // Initialize the Tinybase store
 const store = createStore();

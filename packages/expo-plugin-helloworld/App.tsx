@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { Button, StyleSheet, Text, View } from 'react-native';
-import { useDevToolsPluginClient } from 'expo';
+import { useDevToolsPluginClient } from 'expo/devtools';
 
 export default function App() {
   const [message, setMessage] = useState(null);

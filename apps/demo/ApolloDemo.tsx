@@ -1,7 +1,7 @@
 import { ApolloProvider, ApolloClient, InMemoryCache, useQuery, gql } from '@apollo/client';
 import { StyleSheet, Text, View, Image, ScrollView } from 'react-native';
 import { bindExpoPlugin } from 'react-native-apollo-devtools-client';
-import { getDevToolsPluginClientAsync } from 'expo';
+import { getDevToolsPluginClientAsync } from 'expo/devtools';
 
 const client = new ApolloClient({
   uri: 'https://flyby-router-demo.herokuapp.com/',

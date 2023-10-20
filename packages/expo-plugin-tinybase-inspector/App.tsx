@@ -3,7 +3,7 @@ import { createStore } from 'tinybase/debug';
 import { Provider } from 'tinybase/debug/ui-react';
 import { StoreInspector } from 'tinybase/debug/ui-react-dom';
 
-import { useDevToolsPluginClient } from 'expo';
+import { useDevToolsPluginClient } from 'expo/devtools';
 
 const store = createStore();
 

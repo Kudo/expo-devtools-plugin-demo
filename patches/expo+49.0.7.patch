@@ -1,34 +1,3 @@
-diff --git a/node_modules/expo/build/Expo.d.ts b/node_modules/expo/build/Expo.d.ts
-index e3aec9d..69b75a5 100644
---- a/node_modules/expo/build/Expo.d.ts
-+++ b/node_modules/expo/build/Expo.d.ts
-@@ -3,4 +3,5 @@ import * as Logs from './logs/Logs';
- export { Logs };
- export { disableErrorHandling } from './errors/ExpoErrorManager';
- export { default as registerRootComponent } from './launch/registerRootComponent';
-+export { getDevToolsPluginClientAsync, useDevToolsPluginClient } from './devtools';
- //# sourceMappingURL=Expo.d.ts.map
-\ No newline at end of file
-diff --git a/node_modules/expo/build/Expo.d.ts.map b/node_modules/expo/build/Expo.d.ts.map
-index ae27162..108bdb4 100644
---- a/node_modules/expo/build/Expo.d.ts.map
-+++ b/node_modules/expo/build/Expo.d.ts.map
-@@ -1 +1 @@
--{"version":3,"file":"Expo.d.ts","sourceRoot":"","sources":["../src/Expo.ts"],"names":[],"mappings":"AAAA,OAAO,WAAW,CAAC;AAEnB,OAAO,KAAK,IAAI,MAAM,aAAa,CAAC;AAEpC,OAAO,EAAE,IAAI,EAAE,CAAC;AAChB,OAAO,EAAE,oBAAoB,EAAE,MAAM,2BAA2B,CAAC;AACjE,OAAO,EAAE,OAAO,IAAI,qBAAqB,EAAE,MAAM,gCAAgC,CAAC"}
-\ No newline at end of file
-+{"version":3,"file":"Expo.d.ts","sourceRoot":"","sources":["../src/Expo.ts"],"names":[],"mappings":"AAAA,OAAO,WAAW,CAAC;AAEnB,OAAO,EAAE,oBAAoB,EAAE,MAAM,2BAA2B,CAAC;AACjE,OAAO,EAAE,OAAO,IAAI,qBAAqB,EAAE,MAAM,gCAAgC,CAAC;AAClF,OAAO,EAAE,iBAAiB,EAAE,sBAAsB,EAAE,MAAM,sBAAsB,CAAC;AACjF,OAAO,KAAK,QAAQ,MAAM,YAAY,CAAC;AACvC,OAAO,EAAE,mBAAmB,EAAE,2BAA2B,EAAE,MAAM,mBAAmB,CAAC"}
-\ No newline at end of file
-diff --git a/node_modules/expo/build/Expo.js b/node_modules/expo/build/Expo.js
-index dd29cf1..b21cfeb 100644
---- a/node_modules/expo/build/Expo.js
-+++ b/node_modules/expo/build/Expo.js
-@@ -3,4 +3,5 @@ import * as Logs from './logs/Logs';
- export { Logs };
- export { disableErrorHandling } from './errors/ExpoErrorManager';
- export { default as registerRootComponent } from './launch/registerRootComponent';
-+export { getDevToolsPluginClientAsync, useDevToolsPluginClient } from './devtools';
- //# sourceMappingURL=Expo.js.map
-\ No newline at end of file
 diff --git a/node_modules/expo/build/devtools/DevToolsPluginClient.d.ts b/node_modules/expo/build/devtools/DevToolsPluginClient.d.ts
 new file mode 100644
 index 0000000..8e862e1
@@ -770,3 +739,17 @@ index 0000000..43434f5
 @@ -0,0 +1 @@
 +{"version":3,"file":"index.js","sourceRoot":"","sources":["../../src/devtools/index.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,QAAQ,EAAE,SAAS,EAAE,MAAM,OAAO,CAAC;AAG5C,OAAO,EAAE,0BAA0B,EAAE,MAAM,+BAA+B,CAAC;AAC3E,OAAO,EAAE,iBAAiB,EAAE,MAAM,qBAAqB,CAAC;AAExD,MAAM,WAAW,GAAyC,EAAE,CAAC;AAE7D;;GAEG;AACH,MAAM,CAAC,KAAK,UAAU,4BAA4B,CAChD,UAAkB;IAElB,MAAM,cAAc,GAAG,iBAAiB,EAAE,CAAC;IAC3C,IAAI,QAAQ,GAAG,WAAW,CAAC,UAAU,CAAC,CAAC;IACvC,IACE,QAAQ,IAAI,IAAI;QAChB,CAAC,QAAQ,CAAC,WAAW,EAAE,KAAK,KAAK;YAC/B,QAAQ,CAAC,cAAc,CAAC,SAAS,KAAK,cAAc,CAAC,SAAS,CAAC,EACjE;QACA,MAAM,QAAQ,CAAC,UAAU,EAAE,CAAC;QAC5B,OAAO,WAAW,CAAC,UAAU,CAAC,CAAC;KAChC;IACD,IAAI,QAAQ,IAAI,IAAI,EAAE;QACpB,QAAQ,GAAG,MAAM,0BAA0B,CAAC,EAAE,GAAG,cAAc,EAAE,UAAU,EAAE,CAAC,CAAC;QAC/E,WAAW,CAAC,UAAU,CAAC,GAAG,QAAQ,CAAC;KACpC;IACD,OAAO,QAAQ,CAAC;AAClB,CAAC;AAED;;GAEG;AACH,MAAM,UAAU,uBAAuB,CAAC,UAAkB;IACxD,MAAM,CAAC,MAAM,EAAE,SAAS,CAAC,GAAG,QAAQ,CAA8B,IAAI,CAAC,CAAC;IACxE,MAAM,CAAC,KAAK,EAAE,QAAQ,CAAC,GAAG,QAAQ,CAAe,IAAI,CAAC,CAAC;IAEvD,SAAS,CAAC,GAAG,EAAE;QACb,KAAK,UAAU,KAAK;YAClB,IAAI;gBACF,MAAM,MAAM,GAAG,MAAM,4BAA4B,CAAC,UAAU,CAAC,CAAC;gBAC9D,SAAS,CAAC,MAAM,CAAC,CAAC;aACnB;YAAC,OAAO,CAAC,EAAE;gBACV,QAAQ,CAAC,IAAI,KAAK,CAAC,uDAAuD,GAAG,CAAC,CAAC,QAAQ,EAAE,CAAC,CAAC,CAAC;aAC7F;QACH,CAAC;QAED,KAAK,UAAU,QAAQ;YACrB,IAAI;gBACF,MAAM,MAAM,EAAE,UAAU,EAAE,CAAC;aAC5B;YAAC,OAAO,CAAC,EAAE;gBACV,QAAQ,CACN,IAAI,KAAK,CAAC,0DAA0D,GAAG,CAAC,CAAC,QAAQ,EAAE,CAAC,CACrF,CAAC;aACH;QACH,CAAC;QAED,KAAK,EAAE,CAAC;QACR,OAAO,GAAG,EAAE;YACV,QAAQ,EAAE,CAAC;QACb,CAAC,CAAC;IACJ,CAAC,EAAE,CAAC,UAAU,CAAC,CAAC,CAAC;IAEjB,IAAI,KAAK,IAAI,IAAI,EAAE;QACjB,MAAM,KAAK,CAAC;KACb;IACD,OAAO,MAAM,CAAC;AAChB,CAAC","sourcesContent":["import { useState, useEffect } from 'react';\n\nimport { DevToolsPluginClient } from './DevToolsPluginClient';\nimport { createDevToolsPluginClient } from './DevToolsPluginClientFactory';\nimport { getConnectionInfo } from './getConnectionInfo';\n\nconst instanceMap: Record<string, DevToolsPluginClient> = {};\n\n/**\n * Public API to get the DevToolsPluginClient instance.\n */\nexport async function getDevToolsPluginClientAsync(\n  pluginName: string\n): Promise<DevToolsPluginClient> {\n  const connectionInfo = getConnectionInfo();\n  let instance = instanceMap[pluginName];\n  if (\n    instance != null &&\n    (instance.isConnected() === false ||\n      instance.connectionInfo.devServer !== connectionInfo.devServer)\n  ) {\n    await instance.closeAsync();\n    delete instanceMap[pluginName];\n  }\n  if (instance == null) {\n    instance = await createDevToolsPluginClient({ ...connectionInfo, pluginName });\n    instanceMap[pluginName] = instance;\n  }\n  return instance;\n}\n\n/**\n * A React hook to get the DevToolsPluginClient instance.\n */\nexport function useDevToolsPluginClient(pluginName: string): DevToolsPluginClient | null {\n  const [client, setClient] = useState<DevToolsPluginClient | null>(null);\n  const [error, setError] = useState<Error | null>(null);\n\n  useEffect(() => {\n    async function setup() {\n      try {\n        const client = await getDevToolsPluginClientAsync(pluginName);\n        setClient(client);\n      } catch (e) {\n        setError(new Error('Failed to setup client from useDevToolsPluginClient: ' + e.toString()));\n      }\n    }\n\n    async function teardown() {\n      try {\n        await client?.closeAsync();\n      } catch (e) {\n        setError(\n          new Error('Failed to teardown client from useDevToolsPluginClient: ' + e.toString())\n        );\n      }\n    }\n\n    setup();\n    return () => {\n      teardown();\n    };\n  }, [pluginName]);\n\n  if (error != null) {\n    throw error;\n  }\n  return client;\n}\n"]}
 \ No newline at end of file
+diff --git a/node_modules/expo/devtools.d.ts b/node_modules/expo/devtools.d.ts
+new file mode 100644
+index 0000000..eceb646
+--- /dev/null
++++ b/node_modules/expo/devtools.d.ts
+@@ -0,0 +1 @@
++export * from './build/devtools';
+diff --git a/node_modules/expo/devtools.js b/node_modules/expo/devtools.js
+new file mode 100644
+index 0000000..529b931
+--- /dev/null
++++ b/node_modules/expo/devtools.js
+@@ -0,0 +1 @@
++module.exports = require('./build/devtools');
