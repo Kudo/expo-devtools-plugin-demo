@@ -1,7 +1,7 @@
 import { ApolloProvider, ApolloClient, InMemoryCache, useQuery, gql } from '@apollo/client';
 import { StyleSheet, Text, View, Image, ScrollView } from 'react-native';
 import { bindExpoPlugin } from 'react-native-apollo-devtools-client';
-import { connectPluginFromAppAsync } from 'expo/devtools';
+import { getDevToolsPluginClientAsync } from 'expo/devtools';
 
 const client = new ApolloClient({
   uri: 'https://flyby-router-demo.herokuapp.com/',
@@ -10,7 +10,9 @@ const client = new ApolloClient({
 
 (async function () {
   if (__DEV__) {
-    const devToolsClient = await connectPluginFromAppAsync();
+    const devToolsClient = await getDevToolsPluginClientAsync(
+      'expo-plugin-react-native-apollo-devtools'
+    );
     bindExpoPlugin(devToolsClient, client);
   }
 })();

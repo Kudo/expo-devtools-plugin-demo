@@ -2,48 +2,49 @@ import { useEffect } from 'react';
 import { createStore } from 'tinybase';
 import { Button, Text, View } from 'react-native';
 import { useValue, Provider } from 'tinybase/lib/ui-react';
-import { connectPluginFromAppAsync } from 'expo/devtools';
-
-// Async wrapper
-let _client = connectPluginFromAppAsync();
-async function getClientAsync() {
-  return await _client;
-}
-
-// Wrapper around the client to make it async
-async function sendMessageAsync(message: string, data: any) {
-  const client = await getClientAsync();
-  client.sendMessage(message, data);
-}
+import { useDevToolsPluginClient } from 'expo/devtools';
 
 // Initialize the Tinybase store
 const store = createStore();
 store.setValue('counter', 0);
 
-// Listen for changes to the counter value, send them to the devtools
-store.addValueListener('counter', (_valueId, newVal, oldValue) => {
-  sendMessageAsync('update', {
-    message: `Value changed from ${oldValue} to ${newVal}`,
-  });
-});
-
 function Main() {
   const count = useValue('counter');
+  const client = useDevToolsPluginClient('expo-plugin-helloworld');
 
   useEffect(() => {
-    (async function () {
-      const client = await getClientAsync();
-
-      client.addMessageListener('ping', (data) => {
+    const subscriptions = [];
+    subscriptions.push(
+      client?.addMessageListener('ping', (data) => {
         alert(`ping from devtools: ${JSON.stringify(data)}`);
-        client.sendMessage('pong', { from: 'app' });
-      });
+        client?.sendMessage('pong', { from: 'app' });
+      })
+    );
 
-      client.addMessageListener('pong', (data) => {
+    subscriptions.push(
+      client?.addMessageListener('pong', (data) => {
         alert(`pong from devtools: ${JSON.stringify(data)}`);
+      })
+    );
+
+    // Listen for changes to the counter value, send them to the devtools
+    const listenerId = store.addValueListener('counter', (_valueId, newVal, oldValue) => {
+      client?.sendMessage('update', {
+        message: `Value changed from ${oldValue} to ${newVal}`,
       });
-    })();
-  }, []);
+    });
+
+    return () => {
+      store.delListener(listenerId);
+      for (const subscription of subscriptions) {
+        subscription?.remove();
+      }
+    };
+  }, [client, store]);
+
+  if (!client) {
+    return null;
+  }
 
   return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
@@ -53,7 +54,7 @@ function Main() {
         onPress={() => store.setValue('counter', parseInt(count.toString(), 10) + 1)}
       />
 
-      <Button title="Ping" onPress={() => sendMessageAsync('ping', { from: 'app/button' })} />
+      <Button title="Ping" onPress={() => client?.sendMessage('ping', { from: 'app/button' })} />
     </View>
   );
 }

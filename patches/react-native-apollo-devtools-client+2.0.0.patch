@@ -1,0 +1,9 @@
+--- a/node_modules/react-native-apollo-devtools-client/package.json
++++ b/node_modules/react-native-apollo-devtools-client/package.json
+@@ -1,5 +1,5 @@
+ {
+-  "name": "@kudo-chien/react-native-apollo-devtools-client",
++  "name": "react-native-apollo-devtools-client",
+   "version": "2.0.0",
+   "description": "Apollo devtools for React Native",
+   "main": "lib/commonjs/index",

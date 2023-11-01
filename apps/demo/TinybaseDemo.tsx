@@ -2,44 +2,43 @@ import { useEffect } from 'react';
 import { createStore } from 'tinybase';
 import { Button, Text, View } from 'react-native';
 import { useValue, Provider } from 'tinybase/lib/ui-react';
-import { connectPluginFromAppAsync } from 'expo/devtools';
+import { useDevToolsPluginClient } from 'expo/devtools';
 
 const store = createStore().setValue('counter', 0);
-const client = connectPluginFromAppAsync();
-
-async function getClientAsync() {
-  return await client;
-}
 
 /** Silly: sync the full store every time something changes **/
-async function storeTransactionListener() {
-  const client = await getClientAsync();
-  client.sendMessage('@tinybase-inspector/update', store.getJson());
-}
 
 function Main() {
   const count = useValue('counter');
+  const client = useDevToolsPluginClient('expo-plugin-tinybase-inspector');
 
   useEffect(() => {
-    let editListener;
+    const subscriptions = [];
 
     /* Sync the full store on init */
-    (async function () {
-      const client = await getClientAsync();
-      client.sendMessage('@tinybase-inspector/init', store.getJson());
+    client?.sendMessage('@tinybase-inspector/init', store.getJson());
 
-      editListener = client.addMessageListener('@tinybase-inspector/edit', (data) => {
+    subscriptions.push(
+      client?.addMessageListener('@tinybase-inspector/edit', (data) => {
         store.setJson(data);
-      });
-    })();
+      })
+    );
 
-    const listenerId = store.addDidFinishTransactionListener(storeTransactionListener);
+    const listenerId = store.addDidFinishTransactionListener(() => {
+      client?.sendMessage('@tinybase-inspector/update', store.getJson());
+    });
 
     return () => {
       store.delListener(listenerId);
-      editListener?.remove();
+      for (const subscription of subscriptions) {
+        subscription?.remove();
+      }
     };
-  }, []);
+  }, [client, store]);
+
+  if (client == null) {
+    return null;
+  }
 
   return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
