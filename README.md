@@ -1,5 +1,8 @@
 # expo-devtools-plugin-demo
 
+> [!IMPORTANT]
+> The DevTools Plugins work is moving into https://github.com/expo/dev-plugins. This repository is now archived and some doc may be out of date. Please look into the [new repository](https://github.com/expo/dev-plugins). 
+
 This is a proof-of-concept project that demonstrates how to use Expo CLI devtools plugins, with some plugins included.
 
 - [react-native-apollo-devtools](https://github.com/razorpay/react-native-apollo-devtools)
